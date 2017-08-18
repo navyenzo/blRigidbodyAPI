@@ -48,8 +48,8 @@ protected: // Protected typedefs
 
     typedef typename blRigidBody<blDataType>::blVectorType              blVectorType;
 
-    typedef blResourceAPI::blVector< blRigidBodySystem<blDataType> >    blRigidBodyContainerType;
-    typedef blResourceAPI::blVector< blConnection<blDataType> >         blConnectionContainerType;
+    typedef std::vector< blRigidBodySystem<blDataType> >                blRigidBodyContainerType;
+    typedef std::vector< blConnection<blDataType> >                     blConnectionContainerType;
 
 public: // Constructors and destructors
 

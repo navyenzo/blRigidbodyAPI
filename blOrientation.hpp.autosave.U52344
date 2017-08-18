@@ -142,7 +142,7 @@ public: // Public functions
     // using total euler
     // angles
 
-    void                                                        adjustOrientation(const blVectorType& totalEulerAngles,
+    void                                                        adjustOrientation(const blVectorType& TotalEulerAngles,
                                                                                   const bool& shouldOrientationAxesBeUpdated = true,
                                                                                   const bool& shouldOrientationAngleAndAxisBeUpdated = true);
 
@@ -303,13 +303,16 @@ inline void blOrientation<blDataType>::setOrientationWithTwoAxes(const blVectorT
     //              rotation in the object's
     //              rotation quaternion
 
-    m_rotQtn = blQuaternionType(m_angleOfRotation,m_axisOfRotation);
+    m_rotQtn = blMathAPI::blQuaternionType(m_angleOfRotation,
+                                           m_axisOfRotation.x,
+                                           m_axisOfRotation.y,
+                                           m_axisOfRotation.z);
 
     // Fifth:       Calculate the
     //              temporary
     //              rotated y axis
 
-    blVectorType yyAxis = blVectorType(0,1,0);
+    blVectorType yyAxis = blMathAPI::blVectorType(0,1,0);
     blMathAPI::rotateVector(m_rotQtn,yyAxis);
 
     // Sixth:       Calculate an angle/axis
@@ -320,16 +323,19 @@ inline void blOrientation<blDataType>::setOrientationWithTwoAxes(const blVectorT
 
     m_angleOfRotation = -std::acos(yyAxis*m_yAxis);
     m_axisOfRotation = blMathAPI::crossProduct(m_yAxis,yyAxis);
-
-    if(blMathAPI::norm2(m_axisOfRotation) > 0)
-        blMathAPI::normalize(m_axisOfRotation);
+    
+    if(m_axisOfRotation.getMagnitude() > 0)
+        m_axisOfRotation.normalize();
 
     // Seventh:     Store this last
     //              rotation in the
     //              object's rotation
     //              quaternion
 
-    m_rotQtn = blQuaternionType(m_angleOfRotation,m_axisOfRotation) * m_rotQtn;
+    m_rotQtn = blQuaternionType(m_angleOfRotation,
+                                m_axisOfRotation.x,
+                                m_axisOfRotation.y,
+                                m_axisOfRotation.z) * m_rotQtn;
 
     // Store the current
     // rotation quaternion
@@ -338,7 +344,7 @@ inline void blOrientation<blDataType>::setOrientationWithTwoAxes(const blVectorT
     // and as the starting
     // quaternion
 
-    m_lastRotQtn = blQuaternionType(0,blVectorType(1,0,0));
+    m_lastRotQtn = blQuaternionType(0,1,0,0);
     m_earlierRotQtn = m_rotQtn;
     m_startingRotQtn = m_rotQtn;
 
@@ -360,7 +366,7 @@ inline void blOrientation<blDataType>::setOrientation(const blQuaternionType& ro
     // quaternion
 
     m_rotQtn = rotQtn;
-    m_lastRotQtn = blQuaternionType(0,blVectorType(1,0,0));
+    m_lastRotQtn = blQuaternionType(0,1,0,0);
     m_earlierRotQtn = m_rotQtn;
     m_startingRotQtn = m_rotQtn;
 
@@ -405,9 +411,9 @@ inline void blOrientation<blDataType>::setOrientationWithEulerAngles(const blDat
     // from its current
     // rotation
 
-    m_totalEulerAngles.x() = xAngle;
-    m_totalEulerAngles.y() = yAngle;
-    m_totalEulerAngles.z() = zAngle;
+    m_totalEulerAngles.x = xAngle;
+    m_totalEulerAngles.y = yAngle;
+    m_totalEulerAngles.z = zAngle;
 
     m_earlierTotalEulerAngles = m_totalEulerAngles;
 }
@@ -435,7 +441,7 @@ inline void blOrientation<blDataType>::rotate(const blQuaternionType& rotQtn,
     //              that we had a rotation
     //              in the first place
 
-    if(m_rotQtn.w() == 1)
+    if(m_rotQtn.m_w == 1)
         m_rotQtn = rotQtn;
     else
         m_rotQtn = rotQtn*m_rotQtn;
@@ -511,9 +517,9 @@ inline void blOrientation<blDataType>::rotateWithAngleAxis(const blDataType& Ang
     // for this rotation
 
     blQuaternionType rotQtn(AngleOfRotation,
-                            AxisOfRotation.x(),
-                            AxisOfRotation.y(),
-                            AxisOfRotation.z());
+                            AxisOfRotation.x,
+                            AxisOfRotation.y,
+                            AxisOfRotation.z);
 
     // rotate using
     // the quaternion
@@ -527,16 +533,18 @@ inline void blOrientation<blDataType>::rotateWithAngleAxis(const blDataType& Ang
 
 //-------------------------------------------------------------------
 template<typename blDataType>
-inline void blOrientation<blDataType>::adjustOrientation(const blVectorType& totalEulerAngles,
+inline void blOrientation<blDataType>::adjustOrientation(const blVectorType& TotalEulerAngles,
                                                          const bool& shouldOrientationAxesBeUpdated,
                                                          const bool& shouldOrientationAngleAndAxisBeUpdated)
 {
     // Form a quaternion
     // for this rotation
 
-    blMathAPI::eulerAnglesToQuaternion(totalEulerAngles,m_rotQtn);
+    m_rotQtn = blQuaternionType(TotalEulerAngles.x,
+                                TotalEulerAngles.y,
+                                TotalEulerAngles.z);
 
-    m_lastRotQtn = blQuaternionType(0,blVectorType(1,0,0));
+    m_lastRotQtn = blQuaternionType(0,1,0,0);
     m_earlierRotQtn = m_rotQtn;
     m_startingRotQtn = m_rotQtn;
 
@@ -544,7 +552,7 @@ inline void blOrientation<blDataType>::adjustOrientation(const blVectorType& tot
     // total euler angles
 
     m_earlierTotalEulerAngles = m_totalEulerAngles;
-    m_totalEulerAngles = totalEulerAngles;
+    m_totalEulerAngles = TotalEulerAngles;
 
     // Update the
     // orientation
@@ -573,15 +581,14 @@ inline void blOrientation<blDataType>::updateOrientationAxes()
 
     m_xAxis = blVectorType(1,0,0);
     m_yAxis = blVectorType(0,1,0);
-
-    blMathAPI::rotateVector(m_rotQtn,m_xAxis);
-    blMathAPI::rotateVector(m_rotQtn,m_yAxis);
+    m_rotQtn.rotateVector(m_xAxis);
+    m_rotQtn.rotateVector(m_yAxis);
 
     // Second:      Recalculate the
     //              z axis by crossing
     //              x into y
 
-    m_zAxis = blMathAPI::getNormalized(crossProduct(m_xAxis,m_yAxis));
+    m_zAxis = crossProduct(m_xAxis,m_yAxis).getNormalized();
 }
 //-------------------------------------------------------------------
 
@@ -590,7 +597,10 @@ inline void blOrientation<blDataType>::updateOrientationAxes()
 template<typename blDataType>
 inline void blOrientation<blDataType>::updateOrientationAngleAndAxisOfRotation()
 {
-    blMathAPI::quaternionToAxisAngle(m_rotQtn,m_axisOfRotation,m_angleOfRotation);
+    m_angleOfRotation = m_rotQtn.m_Angle*(blDataType(180)/blMathAPI::pi);
+    m_axisOfRotation.x = m_rotQtn.m_Ax;
+    m_axisOfRotation.y = m_rotQtn.m_Ay;
+    m_axisOfRotation.z = m_rotQtn.m_Az;
 }
 //-------------------------------------------------------------------
 
@@ -604,10 +614,8 @@ inline void blOrientation<blDataType>::updateTotalEulerAngles()
     // current and earlier
     // rotations
 
-    blVectorType eulerAngles,earlierEulerAngles;
-
-    blMathAPI::quaternionToEulerAngles(m_rotQtn,eulerAngles);
-    blMathAPI::quaternionToEulerAngles(m_rotQtn,earlierEulerAngles);
+    blVectorType eulerAngles = m_rotQtn.getEulerAngles();
+    blVectorType earlierEulerAngles = m_earlierRotQtn.getEulerAngles();
 
     // Store the current
     // total euler angles
@@ -626,44 +634,44 @@ inline void blOrientation<blDataType>::updateTotalEulerAngles()
 
 
 
-    if(eulerAngles.x() * earlierEulerAngles.x() > 0)
-        m_totalEulerAngles.x() += (eulerAngles.x() - earlierEulerAngles.x());
+    if(eulerAngles.x * earlierEulerAngles.x > 0)
+        m_totalEulerAngles.x += (eulerAngles.x - earlierEulerAngles.x);
     else
     {
-        if(eulerAngles.x() < -blMathAPI::pi/2.0)
-            m_totalEulerAngles.x() += (2.0*blMathAPI::pi + eulerAngles.x()) - earlierEulerAngles.x();
-        else if(eulerAngles.x() < 0)
-            m_totalEulerAngles.x() += eulerAngles.x() - earlierEulerAngles.x();
+        if(eulerAngles.x < -blMathAPI::pi/2.0)
+            m_totalEulerAngles.x += (2.0*blMathAPI::pi + eulerAngles.x) - earlierEulerAngles.x;
+        else if(eulerAngles.x < 0)
+            m_totalEulerAngles.x += eulerAngles.x - earlierEulerAngles.x;
     }
 
-    if(eulerAngles.y() * earlierEulerAngles.y() > 0)
-        m_totalEulerAngles.y() += (eulerAngles.y() - earlierEulerAngles.y());
+    if(eulerAngles.y * earlierEulerAngles.y > 0)
+        m_totalEulerAngles.y += (eulerAngles.y - earlierEulerAngles.y);
     else
     {
-        if(eulerAngles.y() < -blMathAPI::pi/2.0)
-            m_totalEulerAngles.y() += (2.0*blMathAPI::pi + eulerAngles.y()) - earlierEulerAngles.y();
-        else if(eulerAngles.y() < 0)
-            m_totalEulerAngles.y() += eulerAngles.y() - earlierEulerAngles.y();
+        if(eulerAngles.y < -blMathAPI::pi/2.0)
+            m_totalEulerAngles.y += (2.0*blMathAPI::pi + eulerAngles.y) - earlierEulerAngles.y;
+        else if(eulerAngles.y < 0)
+            m_totalEulerAngles.y += eulerAngles.y - earlierEulerAngles.y;
     }
 
-    if(eulerAngles.z() * earlierEulerAngles.z() > 0)
-        m_totalEulerAngles.z() += (eulerAngles.z() - earlierEulerAngles.z());
+    if(eulerAngles.z * earlierEulerAngles.z > 0)
+        m_totalEulerAngles.z += (eulerAngles.z - earlierEulerAngles.z);
     else
     {
-        if(eulerAngles.z() < -blMathAPI::pi/2.0)
-            m_totalEulerAngles.z() += (2.0*blMathAPI::pi + eulerAngles.z()) - earlierEulerAngles.z();
-        else if(eulerAngles.z() < 0)
-            m_totalEulerAngles.z() += eulerAngles.z() - earlierEulerAngles.z();
+        if(eulerAngles.z < -blMathAPI::pi/2.0)
+            m_totalEulerAngles.z += (2.0*blMathAPI::pi + eulerAngles.z) - earlierEulerAngles.z;
+        else if(eulerAngles.z < 0)
+            m_totalEulerAngles.z += eulerAngles.z - earlierEulerAngles.z;
     }
 
-    if(blMathAPI::isNaN(m_totalEulerAngles.x()))
-        m_totalEulerAngles.x() = 0;
+    if(blMathAPI::isNaN(m_totalEulerAngles.x))
+        m_totalEulerAngles.x = 0;
 
-    if(blMathAPI::isNaN(m_totalEulerAngles.y()))
-        m_totalEulerAngles.y() = 0;
+    if(blMathAPI::isNaN(m_totalEulerAngles.y))
+        m_totalEulerAngles.y = 0;
 
-    if(blMathAPI::isNaN(m_totalEulerAngles.z()))
-        m_totalEulerAngles.z() = 0;
+    if(blMathAPI::isNaN(m_totalEulerAngles.z))
+        m_totalEulerAngles.z = 0;
 }
 //-------------------------------------------------------------------
 
@@ -675,9 +683,9 @@ inline void blOrientation<blDataType>::resetTotalEulerAngles()
     // We zero out the
     // total euler angles
 
-    m_totalEulerAngles.x() = 0;
-    m_totalEulerAngles.y() = 0;
-    m_totalEulerAngles.z() = 0;
+    m_totalEulerAngles.x = 0;
+    m_totalEulerAngles.y = 0;
+    m_totalEulerAngles.z = 0;
     m_earlierTotalEulerAngles = m_totalEulerAngles;
 }
 //-------------------------------------------------------------------

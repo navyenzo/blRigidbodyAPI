@@ -216,9 +216,9 @@ inline const typename blPosition<blDataType>::blVectorType& blPosition<blDataTyp
 template<typename blDataType>
 inline void blPosition<blDataType>::setPosition(const blVectorType& position)
 {
-    setPosition(position.x,
-                position.y,
-                position.z);
+    setPosition(position.x(),
+                position.y(),
+                position.z());
 }
 //-------------------------------------------------------------------
 
@@ -232,9 +232,9 @@ inline void blPosition<blDataType>::setPosition(const blDataType& xPos,
     // Set the position
     // components
 
-    m_position.x = xPos;
-    m_position.y = yPos;
-    m_position.z = zPos;
+    m_position.x() = xPos;
+    m_position.y() = yPos;
+    m_position.z() = zPos;
 
     // Since we're
     // explicitly
@@ -261,9 +261,9 @@ inline void blPosition<blDataType>::setPosition(const blDataType& xPos,
 template<typename blDataType>
 inline void blPosition<blDataType>::translate(const blVectorType& translationVector)
 {
-    translate(translationVector.x,
-              translationVector.y,
-              translationVector.z);
+    translate(translationVector.x(),
+              translationVector.y(),
+              translationVector.z());
 }
 //-------------------------------------------------------------------
 
@@ -284,9 +284,9 @@ inline void blPosition<blDataType>::translate(const blDataType& xStep,
     // current object's
     // position
 
-    m_position.x += xStep;
-    m_position.y += yStep;
-    m_position.z += zStep;
+    m_position.x() += xStep;
+    m_position.y() += yStep;
+    m_position.z() += zStep;
 }
 //-------------------------------------------------------------------
 

@@ -147,9 +147,9 @@ inline void blSize<blDataType>::setSize(const blDataType& x,
                                         const blDataType& y,
                                         const blDataType& z)
 {
-    m_size.x = x;
-    m_size.y = y;
-    m_size.z = z;
+    m_size.x() = x;
+    m_size.y() = y;
+    m_size.z() = z;
 }
 //-------------------------------------------------------------------
 
@@ -176,9 +176,9 @@ inline const typename blSize<blDataType>::blVectorType& blSize<blDataType>::getS
 template<typename blDataType>
 inline void blSize<blDataType>::scale(const blVectorType& scaleVector)
 {
-    m_size.x *= scaleVector.x;
-    m_size.y *= scaleVector.y;
-    m_size.z *= scaleVector.z;
+    m_size.x() *= scaleVector.x();
+    m_size.y() *= scaleVector.y();
+    m_size.z() *= scaleVector.z();
 }
 //-------------------------------------------------------------------
 
@@ -189,9 +189,9 @@ inline void blSize<blDataType>::scale(const blDataType& xScale,
                                       const blDataType& yScale,
                                       const blDataType& zScale)
 {
-    m_size.x *= xScale;
-    m_size.y *= yScale;
-    m_size.z *= zScale;
+    m_size.x() *= xScale;
+    m_size.y() *= yScale;
+    m_size.z() *= zScale;
 }
 //-------------------------------------------------------------------
 
@@ -211,9 +211,9 @@ inline void blSize<blDataType>::changeSize(const blDataType& xChange,
                                            const blDataType& yChange,
                                            const blDataType& zChange)
 {
-    m_size.x += xChange;
-    m_size.y += yChange;
-    m_size.z += zChange;
+    m_size.x() += xChange;
+    m_size.y() += yChange;
+    m_size.z() += zChange;
 }
 //-------------------------------------------------------------------
 

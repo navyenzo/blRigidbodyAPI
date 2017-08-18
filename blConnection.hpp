@@ -43,7 +43,7 @@
 
 //-------------------------------------------------------------------
 template<typename blDataType>
-class blConnection : public blResourceAPI::blIDSystem< blConnection<blDataType> >
+class blConnection
 {
 public: // Constructors and destructors
 
@@ -53,7 +53,6 @@ public: // Constructors and destructors
                  const std::shared_ptr< blRigidBody<blDataType> >& rigidBody2 = std::shared_ptr< blRigidBody<blDataType> >(),
                  const blMathAPI::blVector3d<blDataType>& rigidBody1ConnectionPosition = blMathAPI::blVector3d<blDataType>(0,0,0),
                  const blMathAPI::blVector3d<blDataType>& rigidBody2ConnectionPosition = blMathAPI::blVector3d<blDataType>(0,0,0))
-                 : blResourceAPI::blIDSystem< blConnection<blDataType> >()
     {
         // Copy the bodies
         // pointers
@@ -71,7 +70,6 @@ public: // Constructors and destructors
     // Copy constructor
 
     blConnection(const blConnection<blDataType>& connection)
-                 : blResourceAPI::blIDSystem< blConnection<blDataType> >(connection)
     {
         // Copy the bodies
         // pointers

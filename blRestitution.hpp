@@ -228,35 +228,35 @@ inline void blRestitution<blDataType>::setMotionLimits(const blVectorType& motio
     // We'll make sure that the
     // motion limits are ordered
 
-    if(motionLowerLimits.x <= motionUpperLimits.x)
+    if(motionLowerLimits.x() <= motionUpperLimits.x())
     {
-        m_motionLowerLimits.x = motionLowerLimits.x;
-        m_motionUpperLimits.x = motionUpperLimits.x;
+        m_motionLowerLimits.x() = motionLowerLimits.x();
+        m_motionUpperLimits.x() = motionUpperLimits.x();
     }
     else
     {
-        m_motionLowerLimits.x = motionUpperLimits.x;
-        m_motionUpperLimits.x = motionLowerLimits.x;
+        m_motionLowerLimits.x() = motionUpperLimits.x();
+        m_motionUpperLimits.x() = motionLowerLimits.x();
     }
-    if(motionLowerLimits.y <= motionUpperLimits.y)
+    if(motionLowerLimits.y() <= motionUpperLimits.y())
     {
-        m_motionLowerLimits.y = motionLowerLimits.y;
-        m_motionUpperLimits.y = motionUpperLimits.y;
-    }
-    else
-    {
-        m_motionLowerLimits.y = motionUpperLimits.y;
-        m_motionUpperLimits.y = motionLowerLimits.y;
-    }
-    if(motionLowerLimits.z <= motionUpperLimits.z)
-    {
-        m_motionLowerLimits.z = motionLowerLimits.z;
-        m_motionUpperLimits.z = motionUpperLimits.z;
+        m_motionLowerLimits.y() = motionLowerLimits.y();
+        m_motionUpperLimits.y() = motionUpperLimits.y();
     }
     else
     {
-        m_motionLowerLimits.z = motionUpperLimits.z;
-        m_motionUpperLimits.z = motionLowerLimits.z;
+        m_motionLowerLimits.y() = motionUpperLimits.y();
+        m_motionUpperLimits.y() = motionLowerLimits.y();
+    }
+    if(motionLowerLimits.z() <= motionUpperLimits.z())
+    {
+        m_motionLowerLimits.z() = motionLowerLimits.z();
+        m_motionUpperLimits.z() = motionUpperLimits.z();
+    }
+    else
+    {
+        m_motionLowerLimits.z() = motionUpperLimits.z();
+        m_motionUpperLimits.z() = motionLowerLimits.z();
     }
 }
 //-------------------------------------------------------------------
@@ -272,35 +272,35 @@ inline void blRestitution<blDataType>::setAngularMotionLimits(const blVectorType
     // motion limits are
     // ordered
 
-    if(angularMotionLowerLimits.x <= angularMotionUpperLimits.x)
+    if(angularMotionLowerLimits.x() <= angularMotionUpperLimits.x())
     {
-        m_angularMotionLowerLimits.x = angularMotionLowerLimits.x;
-        m_angularMotionUpperLimits.x = angularMotionUpperLimits.x;
+        m_angularMotionLowerLimits.x() = angularMotionLowerLimits.x();
+        m_angularMotionUpperLimits.x() = angularMotionUpperLimits.x();
     }
     else
     {
-        m_angularMotionLowerLimits.x = angularMotionUpperLimits.x;
-        m_angularMotionUpperLimits.x = angularMotionLowerLimits.x;
+        m_angularMotionLowerLimits.x() = angularMotionUpperLimits.x();
+        m_angularMotionUpperLimits.x() = angularMotionLowerLimits.x();
     }
-    if(angularMotionLowerLimits.y <= angularMotionUpperLimits.y)
+    if(angularMotionLowerLimits.y() <= angularMotionUpperLimits.y())
     {
-        m_angularMotionLowerLimits.y = angularMotionLowerLimits.y;
-        m_angularMotionUpperLimits.y = angularMotionUpperLimits.y;
-    }
-    else
-    {
-        m_angularMotionLowerLimits.y = angularMotionUpperLimits.y;
-        m_angularMotionUpperLimits.y = angularMotionLowerLimits.y;
-    }
-    if(angularMotionLowerLimits.z <= angularMotionUpperLimits.z)
-    {
-        m_angularMotionLowerLimits.z = angularMotionLowerLimits.z;
-        m_angularMotionUpperLimits.z = angularMotionUpperLimits.z;
+        m_angularMotionLowerLimits.y() = angularMotionLowerLimits.y();
+        m_angularMotionUpperLimits.y() = angularMotionUpperLimits.y();
     }
     else
     {
-        m_angularMotionLowerLimits.z = angularMotionUpperLimits.z;
-        m_angularMotionUpperLimits.z = angularMotionLowerLimits.z;
+        m_angularMotionLowerLimits.y() = angularMotionUpperLimits.y();
+        m_angularMotionUpperLimits.y() = angularMotionLowerLimits.y();
+    }
+    if(angularMotionLowerLimits.z() <= angularMotionUpperLimits.z())
+    {
+        m_angularMotionLowerLimits.z() = angularMotionLowerLimits.z();
+        m_angularMotionUpperLimits.z() = angularMotionUpperLimits.z();
+    }
+    else
+    {
+        m_angularMotionLowerLimits.z() = angularMotionUpperLimits.z();
+        m_angularMotionUpperLimits.z() = angularMotionLowerLimits.z();
     }
 }
 //-------------------------------------------------------------------
@@ -348,9 +348,9 @@ inline void blRestitution<blDataType>::setRestitutionCoefficients(const blDataTy
                                                                   const blDataType& yCoeff,
                                                                   const blDataType& zCoeff)
 {
-    m_restitutionCoefficients.x = xCoeff;
-    m_restitutionCoefficients.y = yCoeff;
-    m_restitutionCoefficients.z = zCoeff;
+    m_restitutionCoefficients.x() = xCoeff;
+    m_restitutionCoefficients.y() = yCoeff;
+    m_restitutionCoefficients.z() = zCoeff;
 }
 //-------------------------------------------------------------------
 
@@ -379,9 +379,9 @@ inline void blRestitution<blDataType>::setAngularRestitutionCoefficients(const b
                                                                          const blDataType& yCoeff,
                                                                          const blDataType& zCoeff)
 {
-    m_angularRestitutionCoefficients.x = xCoeff;
-    m_angularRestitutionCoefficients.y = yCoeff;
-    m_angularRestitutionCoefficients.z = zCoeff;
+    m_angularRestitutionCoefficients.x() = xCoeff;
+    m_angularRestitutionCoefficients.y() = yCoeff;
+    m_angularRestitutionCoefficients.z() = zCoeff;
 }
 //-------------------------------------------------------------------
 
@@ -419,9 +419,9 @@ inline void blRestitution<blDataType>::setIsMotionLimited(const bool& isXMotionL
                                                           const bool& isYMotionLimited,
                                                           const bool& isZMotionLimited)
 {
-    m_isMotionLimited.x = isXMotionLimited;
-    m_isMotionLimited.y = isYMotionLimited;
-    m_isMotionLimited.z = isZMotionLimited;
+    m_isMotionLimited.x() = isXMotionLimited;
+    m_isMotionLimited.y() = isYMotionLimited;
+    m_isMotionLimited.z() = isZMotionLimited;
 }
 //-------------------------------------------------------------------
 
@@ -441,9 +441,9 @@ inline void blRestitution<blDataType>::setIsAngularMotionLimited(const bool& isX
                                                                  const bool& isYAngularMotionLimited,
                                                                  const bool& isZAngularMotionLimited)
 {
-    m_isAngularMotionLimited.x = isXAngularMotionLimited;
-    m_isAngularMotionLimited.y = isYAngularMotionLimited;
-    m_isAngularMotionLimited.z = isZAngularMotionLimited;
+    m_isAngularMotionLimited.x() = isXAngularMotionLimited;
+    m_isAngularMotionLimited.y() = isYAngularMotionLimited;
+    m_isAngularMotionLimited.z() = isZAngularMotionLimited;
 }
 //-------------------------------------------------------------------
 

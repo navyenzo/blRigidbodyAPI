@@ -158,9 +158,9 @@ inline void blAngularVelocity<blDataType>::setAngularVelocity(const blDataType& 
                                                               const blDataType& yPos,
                                                               const blDataType& zPos)
 {
-    m_angularVelocity.x = xPos;
-    m_angularVelocity.y = yPos;
-    m_angularVelocity.z = zPos;
+    m_angularVelocity.x() = xPos;
+    m_angularVelocity.y() = yPos;
+    m_angularVelocity.z() = zPos;
 }
 //-------------------------------------------------------------------
 
@@ -171,9 +171,9 @@ inline void blAngularVelocity<blDataType>::changeAngularVelocity(const blDataTyp
                                                                  const blDataType& yChange,
                                                                  const blDataType& zChange)
 {
-    m_angularVelocity.x += xChange;
-    m_angularVelocity.y += yChange;
-    m_angularVelocity.z += zChange;
+    m_angularVelocity.x() += xChange;
+    m_angularVelocity.y() += yChange;
+    m_angularVelocity.z() += zChange;
 }
 //-------------------------------------------------------------------
 

@@ -120,9 +120,9 @@ inline blVelocity<blDataType>::blVelocity(const blDataType& xPos,
                                           const blDataType& yPos,
                                           const blDataType& zPos)
 {
-    m_velocity.x = xPos;
-    m_velocity.y = yPos;
-    m_velocity.z = zPos;
+    m_velocity.x() = xPos;
+    m_velocity.y() = yPos;
+    m_velocity.z() = zPos;
 }
 //-------------------------------------------------------------------
 
@@ -170,9 +170,9 @@ inline void blVelocity<blDataType>::setVelocity(const blDataType& xPos,
                                                 const blDataType& yPos,
                                                 const blDataType& zPos)
 {
-    m_velocity.x = xPos;
-    m_velocity.y = yPos;
-    m_velocity.z = zPos;
+    m_velocity.x() = xPos;
+    m_velocity.y() = yPos;
+    m_velocity.z() = zPos;
 }
 //-------------------------------------------------------------------
 
@@ -183,9 +183,9 @@ inline void blVelocity<blDataType>::changeVelocity(const blDataType& xChange,
                                                    const blDataType& yChange,
                                                    const blDataType& zChange)
 {
-    m_velocity.x += xChange;
-    m_velocity.y += yChange;
-    m_velocity.z += zChange;
+    m_velocity.x() += xChange;
+    m_velocity.y() += yChange;
+    m_velocity.z() += zChange;
 }
 //-------------------------------------------------------------------
 

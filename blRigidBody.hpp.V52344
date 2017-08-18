@@ -310,7 +310,7 @@ inline void blRigidBody<blDataType>::calculateNewStateUsingEuler(const sf::Time&
         // out of the angular
         // velocity
 
-        blDataType theta = blMathAPI::norm2(this->getAngularVelocity()) * timeStep.asSeconds();
+        blDataType theta = this->getAngularVelocity().getMagnitude() * timeStep.asSeconds();
 
         blQuaternionType angVelQtn(std::cos(theta/2.0),
                                    this->getAngularVelocity() * std::sin(theta/2.0));
